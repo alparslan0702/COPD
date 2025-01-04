@@ -19,19 +19,13 @@ from sklearn.metrics import classification_report, confusion_matrix
 from sklearn.model_selection import train_test_split, cross_val_score  
 from sklearn.preprocessing import StandardScaler  
 from sklearn.preprocessing import OneHotEncoder  
-from sklearn.preprocessing import MinMaxScaler
 import matplotlib.pyplot as plt  
-import seaborn as sns  # Seaborn kütüphanesini içe aktarma  
+import seaborn as sns 
 from sklearn.model_selection import train_test_split  
-from sklearn.preprocessing import StandardScaler  
-from sklearn.linear_model import LogisticRegression  
 from sklearn.metrics import confusion_matrix, classification_report, roc_auc_score, roc_curve, accuracy_score  
 from statsmodels.stats.outliers_influence import variance_inflation_factor  
 from statsmodels.tools.tools import add_constant  
 from statsmodels.api import Logit  
-from statsmodels.stats.stattools import durbin_watson  
-from statsmodels.stats.diagnostic import het_breuschpagan  
-
 
 data = pd.read_excel("C:\\Users\\Alparslan\\Desktop\\verimadenvize\\vmv.xlsx")  
 datatest = pd.read_excel("C:\\Users\\Alparslan\\Desktop\\verimadenvize\\vmvtest.xlsx")
@@ -216,8 +210,6 @@ print(classification_report(Y_test, Y_pred))
 
 import pandas as pd  
 from sklearn.model_selection import train_test_split  
-from sklearn.preprocessing import StandardScaler  
-from sklearn.linear_model import LogisticRegression  
 import statsmodels.api as sm  
 
 # statsmodels ile modelin özet bilgilerini alma  
@@ -582,65 +574,3 @@ plt.tight_layout()
 plt.show()
 
 ###############################################################################################################
-###############################################################################################################
-
-# Varsayımlar  
-
-Y_train = Y_train.astype(int)  
-Y_test = Y_test.astype(int)  
-
-import pandas as pd  
-import numpy as np  
-import matplotlib.pyplot as plt  
-import seaborn as sns  
-from sklearn.model_selection import train_test_split  
-from sklearn.preprocessing import StandardScaler  
-from sklearn.linear_model import LogisticRegression  
-from sklearn.metrics import confusion_matrix, classification_report, roc_auc_score, roc_curve, accuracy_score  
-from statsmodels.stats.outliers_influence import variance_inflation_factor  
-from statsmodels.tools.tools import add_constant  
-from statsmodels.api import Logit  
-from statsmodels.stats.stattools import durbin_watson  
-from statsmodels.stats.diagnostic import het_breuschpagan  
-
-# 1. Hataların bağımsızlığı (Durbin-Watson testi)  
-residuals = Y_train - model.predict(X_train)  
-dw_stat = durbin_watson(residuals)  
-print(f"Durbin-Watson İstatistiği: {dw_stat}")  
-
-# 2. Hataların homojenliği (Breusch-Pagan testi)  
-bp_test = het_breuschpagan(residuals, X_train)  
-labels = ['Lagrange multiplier statistic', 'p-value', 'f-value', 'f p-value']  
-print("Breusch-Pagan Testi Sonuçları:")  
-print(dict(zip(labels, bp_test)))  
-
-# 3. Çoklu doğrusal bağıntı (VIF)  
-X_train_vif = add_constant(X_train)  
-vif_data = pd.DataFrame()  
-vif_data["Feature"] = range(X_train_vif.shape[1])  
-vif_data["VIF"] = [variance_inflation_factor(X_train_vif, i) for i in range(X_train_vif.shape[1])]  
-print("\nVIF Değerleri:")  
-print(vif_data)  
-
-# 4. Artıkların tahmin edilen olasılıklara karşı dağılımı  
-predicted_probs = model.predict_proba(X_train)[:, 1]  
-plt.scatter(predicted_probs, residuals)  
-plt.axhline(0, color='red', linestyle='--')  
-plt.xlabel("Tahmin Edilen Olasılıklar")  
-plt.ylabel("Artıklar (Residuals)")  
-plt.title("Artıkların Tahmin Edilen Olasılıklara Karşı Dağılımı")  
-plt.show()  
-
-# 5. Artıkların histogramı ve Q-Q grafiği  
-plt.hist(residuals, bins=20, edgecolor='k')  
-plt.xlabel("Artıklar (Residuals)")  
-plt.ylabel("Frekans")  
-plt.title("Artıkların Histogramı")  
-plt.show()  
-
-import scipy.stats as stats  
-stats.probplot(residuals, dist="norm", plot=plt)  
-plt.title("Q-Q Grafiği")  
-plt.show()
-
-
